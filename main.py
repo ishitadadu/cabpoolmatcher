@@ -166,6 +166,33 @@ def find_matches():
         print("\n" + str(still_waiting) + " student(s) would still be waiting.")
 
 
+def dispatch_cab():
+    destination = ask_choice("Destination", destinations)
+    time_slot = ask_choice("Time slot", time_slots)
+
+    cab = find_open_cab(destination, time_slot)
+    if cab is None:
+        print("No open cab for " + destination + " " + time_slot + ". Nothing changed.")
+        return
+    students = students_for(destination, time_slot)
+    if len(students) == 0:
+        print("Nobody is waiting for " + destination + " " + time_slot + ". Nothing changed.")
+        return
+
+    picks = pick_most_senior(students, cab.free_seats())
+    for s in picks:
+        cab.passengers.append(s)
+        waiting.remove(s)
+    cab.has_left = True
+
+    print(cab.driver + "'s cab left with " + str(len(cab.passengers)) + "/" +
+          str(cab.seats) + " seats filled:")
+    for s in picks:
+        print("  - " + s.name + " (Year " + str(s.year) + ")")
+    if cab.free_seats() > 0:
+        print("  (" + str(cab.free_seats()) + " seat(s) went empty)")
+
+
 def main():
     load_cabs()
     while True:
@@ -173,8 +200,9 @@ def main():
         print("1. Add a ride request")
         print("2. View waiting students and all cabs")
         print("3. Find matches (preview)")
-        print("4. Quit")
-        choice = input("Choose 1-4: ").strip()
+        print("4. Dispatch a cab")
+        print("5. Quit")
+        choice = input("Choose 1-5: ").strip()
         if choice == "1":
             add_request()
         elif choice == "2":
@@ -182,10 +210,12 @@ def main():
         elif choice == "3":
             find_matches()
         elif choice == "4":
+            dispatch_cab()
+        elif choice == "5":
             print("Bye!")
             break
         else:
-            print("Please enter a number from 1 to 4.")
+            print("Please enter a number from 1 to 5.")
 
 
 main()
