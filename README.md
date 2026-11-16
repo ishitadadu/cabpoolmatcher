@@ -2,16 +2,11 @@
 
 A command-line app for the end-of-semester rush. Students ask for a cab to Delhi or Jaipur, wait in a line for their trip, and get seats only when a cab is sent off. When seats are short, seniors go first.
 
-Built for SUTT Back-End recruitment, Task 1. It uses only Python's standard library, so there is nothing to install.
-
 ## How to run
 
 ```
 python3 main.py
 ```
-
-You need Python 3. Everything is kept in memory, so closing the app starts fresh next time.
-
 ## Menu
 
 1. Add a ride request: asks for name, destination, time slot and year, then adds the student to the waiting list.
